@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
@@ -18,7 +19,11 @@
   },
   "homepage": "https://github.com/asiajcrew/employee_tracker#readme",
   "dependencies": {
+    "express": "^4.18.0",
     "inquirer": "^8.2.2",
     "mysql2": "^2.3.3"
+  },
+  "devDependencies": {
+    "jest": "^28.0.2"
   }
 }
