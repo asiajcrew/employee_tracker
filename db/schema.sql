@@ -1,15 +1,18 @@
-CREATE TABLE department (
+DROP TABLE IF EXISTS department;
+DROP TABLE IF EXISTS roles;
+
+CREATE TABLE roles (
     id INTEGER AUTO_INCREMENT PRIMARY KEY,
-    department_name VARCHAR(30) NOT NULL
+    job_title VARCHAR(30) NOT NULL,
+    salary DECIMAL NOT NULL
 );
 
--- CREATE TABLE roles (
---     id INTEGER AUTO_INCREMENT PRIMARY KEY,
---     job_title VARCHAR(30) NOT NULL,
---     salary DECIMAL NOT NULL,
---     department_id INT NOT NULL,
---     CONSTRAINT fk_departments FOREIGN KEY (department_id) REFERENCES departments(id) ON DELETE CASCADE
--- );
+CREATE TABLE department (
+    id INTEGER AUTO_INCREMENT PRIMARY KEY,
+    department_name VARCHAR(30) NOT NULL,
+    roles_id INTEGER,
+    CONSTRAINT fk_roles FOREIGN KEY (roles_id) REFERENCES roles(id) ON DELETE SET NULL
+);
 
 -- CREATE TABLE employee (
 --     id INTEGER AUTO_INCREMENT PRIMARY KEY,
@@ -21,3 +24,4 @@ CREATE TABLE department (
 --     CONSTRAINT fk_employee FOREIGN KEY (manager_id) REFERENCES employee(id) ON DELETE CASCADE
 -- );
 
+-- There is an issue left joining the role table with the department table

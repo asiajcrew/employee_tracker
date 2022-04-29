@@ -2,9 +2,9 @@ const express = require('express');
 const res = require('express/lib/response');
 const PORT = process.env.PORT || 3001;
 const app = express();
-const mysql = require('mysql2');
 
 // Connect to SQL database
+const mysql = require('mysql2');
 const db = mysql.createConnection(
     {
         host: 'localhost',
@@ -19,18 +19,7 @@ const db = mysql.createConnection(
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-// ============================================================================
-// Create a new depatment
-// const sql = `INSERT INTO department (id, department_name)
-// VALUES (?,?)`;
-// const params = [5,'Test'];
-// db.query(sql, params, (err, result) => {
-//     if (err) {
-//         console.log(err);
-//     }
-//     console.log(result);
-// });
-
+// ================================ROUTES=========================================
 // display/ view all deppartments
 app.get('/api/department', (req, res) => {
     const sql = `SELECT * FROM department`;
