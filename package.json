@@ -20,7 +20,7 @@
   "homepage": "https://github.com/asiajcrew/employee_tracker#readme",
   "dependencies": {
     "express": "^4.18.0",
-    "inquirer": "^8.2.2",
+    "inquirer": "^8.2.4",
     "mysql2": "^2.3.3"
   },
   "devDependencies": {
