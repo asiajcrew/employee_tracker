@@ -1,4 +1,5 @@
 const express = require('express');
+const req = require('express/lib/request');
 const res = require('express/lib/response');
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -19,13 +20,32 @@ const db = mysql.createConnection(
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-// ================================ROUTES=========================================
-// display/ view all deppartments
+// ================DEPARTMENT ROUTES=========================================
+// display/ view all departments
 app.get('/api/department', (req, res) => {
-    const sql = `SELECT * FROM department`;
+    const sql = `SELECT department.*, roles.job_title
+    AS roles_job_title
+    FROM department
+    LEFT JOIN roles
+    ON department.roles_id = roles.id`;
     db.query(sql, (err, rows) => {
         if (err) {
             res.status(500).json({ error: err.message });
+            return;
+        }
+        res.json({
+            message: 'success',
+            data: rows
+        });
+    });
+});
+
+app.get('/api/department/:id', (req, res) => {
+    const sql= `SELECT * FROM department WHERE id = ?`;
+    const params= [req.params.id];
+    db.query(sql, params, (err, rows) => {
+        if (err) {
+            res.status(400).json({ error: err.message });
             return;
         }
         res.json({
@@ -73,7 +93,45 @@ app.post('/api/department', ({ body }, res) => {
         });
     });
 });
-// ==============================================================================
+// ========================ROLES ROUTES=================================
+// display/ view all roles
+app.get('/api/roles', (req, res) => {
+    const sql= `SELECT * FROM roles`;
+    db.query(sql, (err, rows) => {
+        if (err) {
+            res.status(500).json({ error: err.message });
+            return;
+        }
+        res.json({
+            message: 'success',
+            data: rows
+        });
+    });
+});
+
+// Update a role
+app.put('/api/department/:id', (req, res) => {
+    const sql= `UPDATE department SET roles_id = ?
+    WHERE id = ?`;
+    const params = [req.body.roles_id, req.params.id];
+    db.query(sql, params, (err, result) => {
+        if (err) {
+            res.status(400).json({ error: err.message });
+        } else if (!result.affectedRows) {
+            res.json({
+                message: 'Role not found'
+            });
+        } else {
+            res.json({
+                message: 'updated',
+                data: req.body,
+                changes: result.affectedRows
+            });
+        }
+    });
+});
+
+
 
 // Default response for any other request (Not Found)
 app.use((req, res) => {
